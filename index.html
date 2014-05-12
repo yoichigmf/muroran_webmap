@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>室蘭市航空写真サンプル</title>
+<script src="leaflet-0.7.2/leaflet.js"></script>
+<script type="text/javascript" src="leaflet.ajax.js"></script>
+ 
+<link rel="stylesheet" href="leaflet-0.7.2/leaflet.css">
+<!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.ie.css" />
+<![endif]-->
+ 
+<style>
+  body {padding: 0; margin: 0}
+  html, body, #map {height: 100%; width: 100%;}
+  .leaflet-container {background: #fff;}
+  
+#wrap {
+	height:100%;
+	min-height:300px;
+	position: relative;
+}
+#footer {
+	position: absolute;
+	width:100%;
+	height:36px;
+	bottom:0px;
+	background-color: #fff;
+    opacity:0.5;
+    z-index:8;
+}
+</style>
+</head>
+
+
+  
+<body>
+<div id="map">
+<script>
+ 
+ 
+
+var mapAttribution = "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>";
+ 
+var mainMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">国土地理院 地理院地図 標準地図</a>', minZoom: 2, maxZoom: 17 }),
+  muroran = L.tileLayer('http://habs.dc.affrc.go.jp/FOSS4G/muroran_tile/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://www.city.muroran.lg.jp/main/org2260/odlib.php" target="_blank">室蘭市オープンデータ</a>', minZoom: 10, maxZoom: 20, tms: true }),
+  lightColorMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">国土地理院 地理院地図 淡色地図</a>', minZoom: 12, maxZoom: 17 }),
+  DEMMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">国土地理院 地理院地図 色別標高図</a>', minZoom: 5, maxZoom: 15, opacity: 0.4}),
+  ortho2 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
+  attribution:  '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">電子国土基本図（オルソ画像）</a>', minZoom: 15, maxZoom: 17,  opacity: 0.4}),
+  mainMap2 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">国土地理院 地理院地図 標準地図</a>', minZoom: 2, maxZoom: 17, opacity: 0.4 }),
+    lightColorMap2 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+  attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">国土地理院 地理院地図 淡色地図</a>', minZoom: 12, maxZoom: 17, opacity: 0.4 }),
+  ortho  = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
+  attribution:  '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">電子国土基本図（オルソ画像）</a>', minZoom: 15, maxZoom: 17})
+  
+  
+
+  OSMLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                    attribution : '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 3, maxZoom: 18, opacity: 0.4
+                });
+
+
+
+function popUp(f,l){
+    var out = [];
+    if (f.properties){
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
+    }
+}
+
+
+
+ 
+var map = L.map('map', {
+    center: new L.LatLng(42.36718647, 140.9823814),
+    zoom: 12,
+    layers: [muroran,mainMap2],
+    maxZoom:20,
+    minZoom:10
+    });
+     
+
+
+var baseMaps = {
+    "室蘭市航空写真":  muroran,
+    "地理院地図 標準地図": mainMap,
+        "電子国土基本図(オルソ画像)":ortho,
+    "地理院地図 淡色地図": lightColorMap
+
+
+};   
+ 
+var overlays = {
+    "地理院地図 標準地図": mainMap2,
+    "地理院地図 淡色地図": lightColorMap2,
+      "地理院地図 色別標高図": DEMMap,
+     "避難所（室蘭市オープンデータ)":hinanjyo,
+    "電子国土基本図(オルソ画像)":ortho2,
+    "OpenStreetMap":OSMLayer
+};
+ 
+ 
+L.control.layers(baseMaps, overlays).addTo(map);
+ 
+ 
+ 
+ 
+</script>
+
+</body>
+</html>
